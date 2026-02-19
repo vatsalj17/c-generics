@@ -7,7 +7,7 @@ SRCS = hashtable.c priority_queue.c queue.c stack.c vector.c
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 TEST_EXES = ht_test pq_test st_qu_test vec_test
 
-all: ht_test pq_test st_qu_test vec_test
+all: $(TEST_EXES)
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(OBJ_DIR)
