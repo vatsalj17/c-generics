@@ -4,7 +4,7 @@ A small, dependency-free library of **generic data structures for C**.
 
 Built for systems programming, OS projects, and anyone who wants STL-like containers without leaving plain C.
 
-No macros. No templates. No magic. Just `void*`, `memcpy`, and pain 😄
+No macros. No templates. No magic. Just `void*`, `memcpy` and `memmove`
 
 ---
 
@@ -68,7 +68,7 @@ values + index * element_size
 ### Clone
 
 ```bash
-git clone https://github.com/yourname/c-generics.git
+git clone https://github.com/vatsalj17/c-generics.git
 cd c-generics
 ````
 
@@ -119,16 +119,3 @@ int main() {
 * Some containers don’t auto-resize (queue).
 * Pointer lifetimes are caller’s responsibility.
 * Designed for learning and controlled environments.
-
----
-
-## Why This Exists
-
-Because:
-
-* STL hides memory details.
-* GLib is huge.
-* Writing your own containers teaches pointer discipline.
-* Debugging `memcpy` mistakes builds character
-
-This library was built while learning low-level programming, OS development, and systems design.
