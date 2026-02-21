@@ -2,8 +2,6 @@
 
 A small, dependency-free library of **generic data structures for C**.
 
-Built for systems programming, OS projects, and anyone who wants STL-like containers without leaving plain C.
-
 No macros. No templates. No magic. Just `void*`, `memcpy` and `memmove`
 
 ---
@@ -39,9 +37,7 @@ C has no true generics, so this library uses **type erasure**.
 You pass `sizeof(type)` when creating containers, and the library stores raw bytes in contiguous memory using pointer arithmetic:
 
 ```
-
 values + index * element_size
-
 ````
 
 ### Memory Rules
