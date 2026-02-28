@@ -10,82 +10,82 @@ typedef struct Queue {
 	size_t tail;
 	size_t entries;
 	size_t capacity;
-} queue_t;
+} queue;
 
-queue_t* queue_init(size_t capacity, size_t element_size) {
-	queue_t* queue = malloc(sizeof(queue_t));
-	if (queue == NULL) {
+queue* queue_init(size_t capacity, size_t element_size) {
+	queue* q = malloc(sizeof(queue));
+	if (q == NULL) {
 		perror("queue malloc failed");
 		return NULL;
 	}
-	queue->capacity = capacity;
-	queue->head = 0;
-	queue->tail = 0;
-	queue->entries = 0;
-	queue->val_size = element_size;
-	queue->values = malloc(capacity * element_size);
-	if (queue->values == NULL) {
+	q->capacity = capacity;
+	q->head = 0;
+	q->tail = 0;
+	q->entries = 0;
+	q->val_size = element_size;
+	q->values = malloc(capacity * element_size);
+	if (q->values == NULL) {
 		perror("array malloc failed");
-		free(queue);
+		free(q);
 		return NULL;
 	}
-	return queue;
+	return q;
 }
 
-bool queue_full(queue_t* queue) {
-	return queue->entries == queue->capacity;
+bool queue_full(queue* q) {
+	return q->entries == q->capacity;
 }
 
-bool queue_empty(queue_t* queue) {
-	return queue->entries == 0;
+bool queue_empty(queue* q) {
+	return q->entries == 0;
 }
 
-void enqueue(queue_t* queue, void* value) {
-	if (!queue) return;
-	if (queue_full(queue)) {
+void enqueue(queue* q, void* value) {
+	if (!q) return;
+	if (queue_full(q)) {
 		fprintf(stderr, "Queue is full\n");
 		exit(1);
 	}
-	// queue->values[queue->tail] = value;
-	void* new = (char*)queue->values + (queue->tail * queue->val_size);
-	memcpy(new, value, queue->val_size);
-	queue->tail = (queue->tail + 1) % queue->capacity;
-	queue->entries++;
+	// q->values[q->tail] = value;
+	void* new = (char*)q->values + (q->tail * q->val_size);
+	memcpy(new, value, q->val_size);
+	q->tail = (q->tail + 1) % q->capacity;
+	q->entries++;
 }
 
-void dequeue(queue_t* queue) {
-	if (!queue) return;
-	if (queue_empty(queue)) {
+void dequeue(queue* q) {
+	if (!q) return;
+	if (queue_empty(q)) {
 		fprintf(stderr, "Queue is empty\n");
 		exit(1);
 	}
-	queue->head = (queue->head + 1) % queue->capacity;
-	queue->entries--;
+	q->head = (q->head + 1) % q->capacity;
+	q->entries--;
 }
 
-void* queue_front(queue_t* queue) {
-	if (!queue || queue_empty(queue)) return NULL;
-	void* result = malloc(queue->val_size);
-	void* src = (char*)queue->values + (queue->head * queue->val_size);
-	memcpy(result, src, queue->val_size);
+void* queue_front(queue* q) {
+	if (!q || queue_empty(q)) return NULL;
+	void* result = malloc(q->val_size);
+	void* src = (char*)q->values + (q->head * q->val_size);
+	memcpy(result, src, q->val_size);
 	return result;
 }
 
-void* queue_back(queue_t* queue) {
-	if (!queue || queue_empty(queue)) return NULL;
-	void* result = malloc(queue->val_size);
-	size_t index = (queue->tail + queue->capacity - 1) % queue->capacity;
-	void* src = (char*)queue->values + (index * queue->val_size);
-	memcpy(result, src, queue->val_size);
+void* queue_back(queue* q) {
+	if (!q || queue_empty(q)) return NULL;
+	void* result = malloc(q->val_size);
+	size_t index = (q->tail + q->capacity - 1) % q->capacity;
+	void* src = (char*)q->values + (index * q->val_size);
+	memcpy(result, src, q->val_size);
 	return result;
 }
 
-size_t queue_size(queue_t* queue) {
-	return queue->entries;
+size_t queue_size(queue* q) {
+	return q->entries;
 }
 
-void queue_destroy(queue_t* queue) {
-	if (!queue) return;
-	free(queue->values);
-	free(queue);
+void queue_destroy(queue* q) {
+	if (!q) return;
+	free(q->values);
+	free(q);
 }

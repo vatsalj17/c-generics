@@ -8,7 +8,7 @@ typedef struct PriorityQueue {
 	size_t size;
 	size_t capacity;
 	pq_cmp_fn cmp;
-} pq_t;
+} priority_queue;
 
 static void swap(void** a, void** b) {
 	void* temp = *a;
@@ -16,9 +16,9 @@ static void swap(void** a, void** b) {
 	*b = temp;
 }
 
-pq_t* pq_init(size_t capacity, pq_cmp_fn cmp) {
+priority_queue* pq_init(size_t capacity, pq_cmp_fn cmp) {
 	if (capacity == 0) return NULL;
-	pq_t* new = malloc(sizeof(pq_t));
+	priority_queue* new = malloc(sizeof(priority_queue));
 	if (!new) return NULL;
 	new->cmp = cmp;
 	new->capacity = capacity;
@@ -32,7 +32,7 @@ pq_t* pq_init(size_t capacity, pq_cmp_fn cmp) {
 	return new;
 }
 
-void pq_push(pq_t* pq, void* data) {
+void pq_push(priority_queue* pq, void* data) {
 	if (!pq) return;
 	if (pq->size == pq->capacity) {
 		size_t new_cap = pq->capacity * 2;
@@ -58,12 +58,12 @@ void pq_push(pq_t* pq, void* data) {
 	}
 }
 
-void* pq_top(pq_t* pq) {
+void* pq_top(priority_queue* pq) {
 	if (!pq || pq_is_empty(pq)) return NULL;
 	return pq->data[0];
 }
 
-void* pq_pop(pq_t* pq) {
+void* pq_pop(priority_queue* pq) {
 	if (!pq || pq_is_empty(pq)) return NULL;
 	void* result = pq->data[0];
 	pq->data[0] = pq->data[--pq->size];
@@ -88,12 +88,12 @@ void* pq_pop(pq_t* pq) {
 	return result;
 }
 
-void pq_destroy(pq_t* pq) {
+void pq_destroy(priority_queue* pq) {
 	if (!pq) return;
 	free(pq->data);
 	free(pq);
 }
 
-bool pq_is_empty(pq_t* pq) {
+bool pq_is_empty(priority_queue* pq) {
 	return pq->size == 0;
 }

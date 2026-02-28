@@ -17,7 +17,7 @@ int comparator(const void* a, const void* b) {
 }
 
 int main(void) {
-	vector_t* v = vec_init(sizeof(custom));
+	vector* v = vec_init(sizeof(custom));
 	custom obj1 = {
 		.num = 1,
 		.str = "Hello",
@@ -47,7 +47,7 @@ int main(void) {
 	free(temp);
 	vec_free(v, NULL);
 
-	vector_t* vi = vec_init_cap(sizeof(int), 3);
+	vector* vi = vec_init_cap(sizeof(int), 3);
 	int arr[6] = {1, 2, 3, 4, 5, 6};
     int arr2[3] = {21, 22, 23};
 	// for (int i = 0; i < 6; i++) vec_push_back(vi, &arr[i]);

@@ -37,7 +37,7 @@ int cmp_int(const void* a, const void* b) {
 
 ## API
 
-### `pq_t* pq_init(size_t capacity, pq_cmp_fn cmp);`
+### `priority_queue* pq_init(size_t capacity, pq_cmp_fn cmp);`
 
 Create priority queue with initial capacity.
 
@@ -45,7 +45,7 @@ Returns `NULL` on failure.
 
 ---
 
-### `void pq_push(pq_t* pq, void* data);`
+### `void pq_push(priority_queue* pq, void* data);`
 
 Insert element into queue.
 
@@ -54,7 +54,7 @@ Insert element into queue.
 
 ---
 
-### `void* pq_top(pq_t* pq);`
+### `void* pq_top(priority_queue* pq);`
 
 Return highest-priority element without removing it.
 
@@ -62,7 +62,7 @@ Returns `NULL` if empty.
 
 ---
 
-### `void* pq_pop(pq_t* pq);`
+### `void* pq_pop(priority_queue* pq);`
 
 Remove and return highest-priority element.
 
@@ -70,13 +70,13 @@ Caller is responsible for freeing element if needed.
 
 ---
 
-### `bool pq_is_empty(pq_t* pq);`
+### `bool pq_is_empty(priority_queue* pq);`
 
 Return `true` if queue is empty.
 
 ---
 
-### `void pq_destroy(pq_t* pq);`
+### `void pq_destroy(priority_queue* pq);`
 
 Free internal memory.
 
@@ -91,7 +91,7 @@ int cmp_int(const void* a, const void* b) {
     return *(int*)a - *(int*)b;
 }
 
-pq_t* pq = pq_init(8, cmp_int);
+priority_queue* pq = pq_init(8, cmp_int);
 
 int a=5,b=10,c=3;
 pq_push(pq,&a);

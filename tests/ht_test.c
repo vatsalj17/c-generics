@@ -67,6 +67,7 @@ int main(void) {
         printf("Deleted user123\n");
     }
 
+    cleanup(deleted);
     hash_table_print(ht);
     hash_table_destroy(ht);
 }

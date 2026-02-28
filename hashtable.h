@@ -7,7 +7,7 @@
 
 typedef uint64_t hashfunction(const char*, size_t);
 typedef void cleanupfunction(void*);
-typedef struct _hash_table hash_table;
+typedef struct HashTable hash_table;
 
 hash_table* hash_table_create(uint32_t size, hashfunction* hf, cleanupfunction* cf);
 void hash_table_destroy(hash_table* ht);

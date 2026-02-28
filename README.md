@@ -93,7 +93,7 @@ make clean
 #include <stdio.h>
 
 int main() {
-    vector_t* v = vec_init(sizeof(int));
+    vector* v = vec_init(sizeof(int));
 
     int x = 42;
     vec_push_back(v, &x);

@@ -17,49 +17,49 @@ Elements are **copied into the queue**.
 
 ## API
 
-### `queue_t* queue_init(size_t capacity, size_t element_size);`
+### `queue* queue_init(size_t capacity, size_t element_size);`
 Create queue.
 
 ---
 
-### `bool queue_full(queue_t* queue);`
+### `bool queue_full(queue* q);`
 Return true if queue is full.
 
-### `bool queue_empty(queue_t* queue);`
+### `bool queue_empty(queue* q);`
 Return true if queue is empty.
 
 ---
 
-### `void enqueue(queue_t* queue, void* value);`
+### `void enqueue(queue* q, void* value);`
 Insert element at back.
 
 Program exits if queue is full.
 
 ---
 
-### `void dequeue(queue_t* queue);`
+### `void dequeue(queue* q);`
 Remove front element.
 
 Program exits if queue is empty.
 
 ---
 
-### `void* queue_front(queue_t* queue);`
+### `void* queue_front(queue* q);`
 Return **malloc’d copy** of front element.
 
-### `void* queue_back(queue_t* queue);`
+### `void* queue_back(queue* q);`
 Return **malloc’d copy** of last element.
 
 Caller must free returned memory.
 
 ---
 
-### `size_t queue_size(queue_t* queue);`
+### `size_t queue_size(queue* q);`
 Number of elements.
 
 ---
 
-### `void queue_destroy(queue_t* queue);`
+### `void queue_destroy(queue* q);`
 Free internal memory.
 
 ---
@@ -67,7 +67,7 @@ Free internal memory.
 ## Example
 
 ```c 
-queue_t* q = queue_init(8, sizeof(int));
+queue* q = queue_init(8, sizeof(int));
 
 int x = 5;
 enqueue(q, &x);

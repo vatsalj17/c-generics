@@ -17,44 +17,44 @@ Elements are **copied into the stack**. Capacity grows automatically.
 
 ## API
 
-### `stack_t* stack_init(size_t capacity, size_t element_size);`
+### `stack* stack_init(size_t capacity, size_t element_size);`
 Create stack with initial capacity.
 
 ---
 
-### `bool stack_full(stack_t* stack);`
+### `bool stack_full(stack* s);`
 Return true if stack is full.
 
-### `bool stack_empty(stack_t* stack);`
+### `bool stack_empty(stack* s);`
 Return true if stack is empty.
 
 ---
 
-### `void push(stack_t* stack, void* value);`
+### `void push(stack* s, void* value);`
 Push element onto stack.
 Automatically resizes if full.
 
 ---
 
-### `void pop(stack_t* stack);`
+### `void pop(stack* s);`
 Remove top element.
 
 Program exits if stack is empty.
 
 ---
 
-### `void* stack_top(stack_t* stack);`
+### `void* stack_top(stack* s);`
 Return **malloc’d copy** of top element.
 Caller must free it.
 
 ---
 
-### `size_t stack_size(stack_t* stack);`
+### `size_t stack_size(stack* s);`
 Return number of elements.
 
 ---
 
-### `void stack_destroy(stack_t* stack);`
+### `void stack_destroy(stack* s);`
 Free internal memory.
 
 ---
@@ -62,7 +62,7 @@ Free internal memory.
 ## Example
 
 ```c 
-stack_t* s = stack_init(8, sizeof(int));
+stack* s = stack_init(8, sizeof(int));
 
 int x = 10;
 push(s, &x);

@@ -23,7 +23,7 @@ int compare_ints(const void *a, const void *b) {
 
 void test_basic_ops() {
     printf("Running Basic Ops Test... ");
-    pq_t* pq = pq_init(10, compare_ints);
+    priority_queue* pq = pq_init(10, compare_ints);
     assert(pq_is_empty(pq));
 
     int values[] = {10, 20, 5, 15};
@@ -45,7 +45,7 @@ void test_basic_ops() {
 
 void test_complex_structs() {
     printf("Running Complex Structs Test... ");
-    pq_t* pq = pq_init(5, compare_procs);
+    priority_queue* pq = pq_init(5, compare_procs);
 
     Process procs[] = {
         {101, 1, "bash"},
@@ -72,7 +72,7 @@ void test_complex_structs() {
 void test_stress_and_order() {
     printf("Running Stress/Order Test... ");
     int size = 1000;
-    pq_t* pq = pq_init(size, compare_ints);
+    priority_queue* pq = pq_init(size, compare_ints);
     int* data = malloc(sizeof(int) * size);
 
     for(int i = 0; i < size; i++) {

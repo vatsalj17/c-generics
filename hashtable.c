@@ -10,7 +10,7 @@ typedef struct entry {
     struct entry* next;
 } entry;
 
-typedef struct _hash_table {
+typedef struct HashTable {
 	uint32_t size;
 	hashfunction* hash;
     cleanupfunction* cf;
@@ -33,22 +33,6 @@ hash_table* hash_table_create(uint32_t size, hashfunction* hf, cleanupfunction* 
     }
     ht->elements = calloc(ht->size, sizeof(entry*));
     return ht;
-}
-
-void hash_table_destroy(hash_table* ht) {
-    if (ht == NULL) return;
-    for (uint32_t i = 0; i < ht->size; i++) {
-        while (ht->elements) {
-            entry* temp = ht->elements[i];
-            if (temp == NULL) break;
-            ht->elements[i] = ht->elements[i]->next;
-            free(temp->key);
-            ht->cf(temp->obj);
-            free(temp);
-        }
-    }
-    free(ht->elements);
-    free(ht);
 }
 
 void hash_table_print(hash_table* ht) {
@@ -85,7 +69,7 @@ bool hash_table_insert(hash_table* ht, const char* key, void* obj) {
 }
 
 void* hash_table_lookup(hash_table* ht, const char* key) {
-    if (key == NULL || ht == NULL) return false;
+    if (key == NULL || ht == NULL) return NULL;
     size_t index = hash_table_index(ht, key);
     entry *temp = ht->elements[index];
     while (temp != NULL && strcmp(temp->key, key) != 0) {
@@ -96,7 +80,7 @@ void* hash_table_lookup(hash_table* ht, const char* key) {
 }
 
 void* hash_table_delete(hash_table* ht, const char* key) {
-    if (key == NULL || ht == NULL) return false;
+    if (key == NULL || ht == NULL) return NULL;
     size_t index = hash_table_index(ht, key);
     entry *temp = ht->elements[index];
     entry *prev = NULL;
@@ -112,6 +96,23 @@ void* hash_table_delete(hash_table* ht, const char* key) {
         prev->next = temp->next;
     }
     void *result = temp->obj;
+    free(temp->key);
     free(temp);
     return result;
+}
+
+void hash_table_destroy(hash_table* ht) {
+    if (ht == NULL) return;
+    for (uint32_t i = 0; i < ht->size; i++) {
+        while (ht->elements[i]) {
+            entry* temp = ht->elements[i];
+            if (temp == NULL) break;
+            ht->elements[i] = ht->elements[i]->next;
+            free(temp->key);
+            ht->cf(temp->obj);
+            free(temp);
+        }
+    }
+    free(ht->elements);
+    free(ht);
 }
