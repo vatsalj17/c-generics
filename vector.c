@@ -100,7 +100,10 @@ void vec_push_back(vector* vec, void* element) {
 }
 
 void vec_insert_at(vector* vec, size_t index, void* element) {
-	assert(index <= vec->size);
+    if (index > vec->size) {
+        fprintf(stderr, "vec_insert_at: index out of bound\n");
+        abort();
+    }
 	if (index == vec->size) {
 		vec_push_back(vec, element);
 		return;
@@ -138,6 +141,10 @@ void vec_push_many(vector* vec, void* data, size_t count) {
 }
 
 void vec_insert_many(vector* vec, size_t index, void* data, size_t count) {
+    if (index > vec->size) {
+        fprintf(stderr, "vec_insert_many: index out of bound\n");
+        abort();
+    }
 	if (vec->capacity == 0 || index == vec->size + 1) {
 		vec_push_many(vec, data, count);
 		return;
@@ -156,17 +163,26 @@ void vec_insert_many(vector* vec, size_t index, void* data, size_t count) {
 
 void vec_pop_back(vector* vec) {
 	assert(vec->size);
+    if (vec->cf) {
+        vec->cf(get_ptr(vec, vec->size - 1));
+    }
 	vec->size--;
 }
 
 void vec_erase_at(vector* vec, size_t index) {
-	assert(index < vec->size);
+    if (index >= vec->size) {
+        fprintf(stderr, "vec_erase_at: index out of bound\n");
+        abort();
+    }
 	if (index == vec->size - 1) {
 		vec_pop_back(vec);
 		return;
 	}
 	void* src = get_ptr(vec, index + 1);
 	void* dest = get_ptr(vec, index);
+    if (vec->cf) {
+        vec->cf(dest);
+    }
 	size_t bytes_to_move = (vec->size - index) * vec->val_size;
 	memmove(dest, src, bytes_to_move);
 	vec->size--;
@@ -213,7 +229,7 @@ void vec_clear(vector* vec) {
 
 void vec_reserve(vector* vec, size_t new_cap) {
 	if (new_cap < vec->capacity) {
-		printf("vec_reserve: Capacity is already sufficient\n");
+		// printf("vec_reserve: Capacity is already sufficient\n");
 		return;
 	}
 	vec_realloc_cap(vec, new_cap);
@@ -263,6 +279,11 @@ size_t vec_capacity(vector* vec) {
 }
 
 void vec_free(vector* vec) {
+    if (vec->cf) {
+        for (size_t i = 0; i < vec->size; i++) {
+            vec->cf(get_ptr(vec, i));
+        }
+    }
     free(vec->values);
     free(vec);
 }

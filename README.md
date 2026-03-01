@@ -93,7 +93,7 @@ make clean
 #include <stdio.h>
 
 int main() {
-    vector* v = vec_init(sizeof(int));
+    vector* v = vec_init(sizeof(int), NULL);
 
     int x = 42;
     vec_push_back(v, &x);
@@ -102,7 +102,7 @@ int main() {
     printf("%d\n", *y);
     free(y);
 
-    vec_free(v, NULL);
+    vec_free(v);
 }
 ```
 
@@ -111,7 +111,6 @@ int main() {
 ##  Safety Notes
 
 * Not thread-safe.
-* Bounds checks mostly via `assert`.
 * Some containers don’t auto-resize (queue).
 * Pointer lifetimes are caller’s responsibility.
 * Designed for learning and controlled environments.

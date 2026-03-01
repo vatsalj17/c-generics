@@ -12,10 +12,10 @@ Generic dynamic array storing fixed-size elements.
 
 ### Constructors
 
-`vector* vec_init(size_t val_size);`  
+`vector* vec_init(size_t val_size, cleanupfunction cf);`  
 Create empty vector.
 
-`vector* vec_init_cap(size_t val_size, size_t capacity);`  
+`vector* vec_init_cap(size_t val_size, size_t capacity, cleanupfunction cf);`  
 Create vector with initial capacity.
 
 `vector* vec_clone(vector* vec);`  
@@ -102,12 +102,9 @@ Current capacity.
 
 ### Destructor
 
-`void vec_free(vector* vec, cleanupfunction cf);`  
+`void vec_free(vector* vec);`  
 
 Free vector memory.
-
-- If `cf == NULL` → `free(values)`
-- Else → custom cleanup on values buffer.
 
 ---
 

@@ -17,7 +17,7 @@ int comparator(const void* a, const void* b) {
 }
 
 int main(void) {
-	vector* v = vec_init(sizeof(custom));
+	vector* v = vec_init(sizeof(custom), NULL);
 	custom obj1 = {
 		.num = 1,
 		.str = "Hello",
@@ -45,9 +45,9 @@ int main(void) {
 	printf("Capacity: %ld, Size: %ld\n", vec_capacity(v), vec_size(v));
 	printf("object got: %d, %s\n", obj.num, obj.str);
 	free(temp);
-	vec_free(v, NULL);
+	vec_free(v);
 
-	vector* vi = vec_init_cap(sizeof(int), 3);
+	vector* vi = vec_init_cap(sizeof(int), 3, NULL);
 	int arr[6] = {1, 2, 3, 4, 5, 6};
     int arr2[3] = {21, 22, 23};
 	// for (int i = 0; i < 6; i++) vec_push_back(vi, &arr[i]);
@@ -83,5 +83,5 @@ int main(void) {
     int a = 34;
     int i = vec_find(vi, &a, comparator);
     printf("%d found at index %d\n", a, i);
-    vec_free(vi, NULL);
+    vec_free(vi);
 }

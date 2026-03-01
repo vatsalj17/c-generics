@@ -1,11 +1,11 @@
 CC = gcc
-CFLAGS = -Wextra -Wall
-DEBUGFLAGS = -Wextra -Wall -fsanitize=address -g
+CFLAGS = -Wextra -Wall -pedantic
+# CFLAGS += -fsanitize=address -g -fno-omit-frame-pointer
 OBJ_DIR = obj
 TEST_DIR = tests
 SRCS = hashtable.c priority_queue.c queue.c stack.c vector.c
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
-TEST_EXES = ht_test pq_test st_qu_test vec_test
+TEST_EXES = ht_test pq_test st_qu_test vec_test vector_stress_test
 
 all: $(TEST_EXES)
 
@@ -23,6 +23,9 @@ st_qu_test: $(TEST_DIR)/st_qu_test.c $(OBJ_DIR)/queue.o $(OBJ_DIR)/stack.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 vec_test: $(TEST_DIR)/vec_test.c $(OBJ_DIR)/vector.o
+	$(CC) $(CFLAGS) -o $@ $^
+
+vector_stress_test: $(TEST_DIR)/vector_stress_test.c $(OBJ_DIR)/vector.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 clean:
