@@ -7,8 +7,8 @@ typedef struct Vector vector;
 typedef void cleanupfunction(void*);
 
 // constructors
-vector* vec_init(size_t val_size);
-vector* vec_init_cap(size_t val_size, size_t capacity);
+vector* vec_init(size_t val_size, cleanupfunction* cf);
+vector* vec_init_cap(size_t val_size, size_t capacity, cleanupfunction* cf);
 vector* vec_clone(vector* vec);
 
 // insert
@@ -22,9 +22,9 @@ void vec_pop_back(vector* vec);
 void vec_erase_at(vector* vec, size_t index);
 
 // access
-void* vec_data_at(vector* vec, size_t index);
-void* vec_front(vector* vec);
-void* vec_back(vector* vec);
+void* vec_data_at(vector* vec, size_t index); /* caller must free */
+void* vec_front(vector* vec); /* caller must free */
+void* vec_back(vector* vec); /* caller must free */
 void* get_ptr(vector* vec, size_t index);
 ssize_t vec_find(vector* vec, void* element, int (*cmp)(const void*, const void*));
 
@@ -41,6 +41,6 @@ size_t vec_size(vector* vec);
 size_t vec_capacity(vector* vec);
 
 // destructor
-void vec_free(vector* vec, cleanupfunction cf);
+void vec_free(vector* vec);
 
 #endif

@@ -10,23 +10,26 @@ typedef struct Vector {
 	size_t val_size;
 	size_t capacity;
 	size_t size;
+    cleanupfunction* cf;
 } vector;
 
-vector* vec_init(size_t val_size) {
+vector* vec_init(size_t val_size, cleanupfunction* cf) {
 	vector* vec = malloc(sizeof(vector));
 	if (!vec) return NULL;
 	vec->val_size = val_size;
 	vec->size = 0;
 	vec->capacity = 0;
+    vec->cf = cf;
 	return vec;
 }
 
-vector* vec_init_cap(size_t val_size, size_t capacity) {
+vector* vec_init_cap(size_t val_size, size_t capacity, cleanupfunction* cf) {
 	vector* vec = malloc(sizeof(vector));
 	if (!vec) return NULL;
 	vec->val_size = val_size;
 	vec->size = 0;
 	vec->capacity = capacity;
+    vec->cf = cf;
 	void* temp = malloc(val_size * capacity);
 	if (temp == NULL) {
 		fprintf(stderr, "vec_init_cap: malloc failed in val intialization\n");
@@ -37,12 +40,13 @@ vector* vec_init_cap(size_t val_size, size_t capacity) {
 }
 
 vector* vec_clone(vector* vec) {
-	vector* new = vec_init_cap(vec->val_size, vec->capacity);
+	vector* new = vec_init_cap(vec->val_size, vec->capacity, vec->cf);
 	size_t bytes_to_copy = vec->size * vec->val_size;
 	new->size = vec->size;
 	memcpy(new->values, vec->values, bytes_to_copy);
 	return new;
 }
+
 static void vec_realloc(vector* vec) {
 	assert(vec->capacity > 0);
 	size_t new_cap = vec->capacity * 2;
@@ -56,8 +60,12 @@ static void vec_realloc(vector* vec) {
 }
 
 static void vec_realloc_cap(vector* vec, size_t new_cap) {
-	assert(vec->capacity > 0);
-	void* temp = realloc(vec->values, new_cap * vec->val_size);
+    void *temp = NULL;
+    if (vec->capacity == 0) {
+        temp = malloc(new_cap * vec->val_size);
+    } else {
+        temp = realloc(vec->values, new_cap * vec->val_size);
+    }
 	if (temp == NULL) {
 		perror("vec_realloc_cap");
 		abort();
@@ -166,7 +174,7 @@ void vec_erase_at(vector* vec, size_t index) {
 
 void* get_ptr(vector* vec, size_t index) {
 	if (index > vec->size) return NULL;
-	return vec->values + (index * vec->val_size);
+	return (char*)vec->values + (index * vec->val_size);
 }
 
 void* vec_data_at(vector* vec, size_t index) {
@@ -176,7 +184,7 @@ void* vec_data_at(vector* vec, size_t index) {
 		perror("vec_data_at");
 		exit(1);
 	}
-	void* data = vec->values + (index * vec->val_size);
+	void* data = (char*)vec->values + (index * vec->val_size);
 	memcpy(new, data, vec->val_size);
 	return new;
 }
@@ -254,11 +262,7 @@ size_t vec_capacity(vector* vec) {
 	return vec->capacity;
 }
 
-void vec_free(vector* vec, cleanupfunction cf) {
-    if (!cf) {
-        free(vec->values);
-    } else {
-        cf(vec->values);
-    }
+void vec_free(vector* vec) {
+    free(vec->values);
     free(vec);
 }
